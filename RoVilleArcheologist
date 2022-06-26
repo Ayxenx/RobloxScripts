@@ -1,0 +1,147 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScriptGUI = Instance.new("ScreenGui")
+local Background = Instance.new("Frame")
+local TopBar = Instance.new("TextLabel")
+local Auto = Instance.new("TextButton")
+local BottomBar = Instance.new("TextLabel")
+
+--Properties:
+
+ScriptGUI.Name = "ScriptGUI"
+ScriptGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScriptGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Background.Name = "Background"
+Background.Parent = ScriptGUI
+Background.Active = true
+Background.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+Background.Position = UDim2.new(0.383582562, 0, 0.369268894, 0)
+Background.Size = UDim2.new(0, 300, 0, 100)
+
+TopBar.Name = "TopBar"
+TopBar.Parent = Background
+TopBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TopBar.BorderColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.BorderSizePixel = 0
+TopBar.Size = UDim2.new(0, 300, 0, 30)
+TopBar.Font = Enum.Font.SourceSans
+TopBar.Text = "RoVille Ex"
+TopBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.TextSize = 14.000
+
+Auto.Name = "Auto"
+Auto.Parent = Background
+Auto.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Auto.BorderSizePixel = 0
+Auto.Position = UDim2.new(0.300000012, 0, 0.370000005, 0)
+Auto.Size = UDim2.new(0, 120, 0, 30)
+Auto.Font = Enum.Font.SourceSans
+Auto.Text = "Auto (Off)"
+Auto.TextColor3 = Color3.fromRGB(255, 255, 255)
+Auto.TextSize = 14.000
+
+BottomBar.Name = "BottomBar"
+BottomBar.Parent = Background
+BottomBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+BottomBar.BorderColor3 = Color3.fromRGB(255, 255, 255)
+BottomBar.BorderSizePixel = 0
+BottomBar.Position = UDim2.new(0, 0, 0.787777543, 0)
+BottomBar.Size = UDim2.new(0, 300, 0, 20)
+BottomBar.Font = Enum.Font.SourceSans
+BottomBar.Text = "Created by:  Ayxen#6166"
+BottomBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+BottomBar.TextSize = 14.000
+
+-- Scripts:
+
+local function PGPQRZ_fake_script() -- Background.LocalScript 
+	local script = Instance.new('LocalScript', Background)
+
+	local UserInputService = game:GetService("UserInputService")
+	
+	local MainFrame = script.Parent
+	local TopBar = MainFrame:WaitForChild("TopBar")
+	
+	local Camera = workspace:WaitForChild("Camera")
+	
+	local DragMousePosition
+	local FramePosition
+	
+	local Draggable = false
+	
+	TopBar.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Draggable = true
+			DragMousePosition = Vector2.new(input.Position.X, input.Position.Y)
+			FramePosition = Vector2.new(MainFrame.Position.X.Scale, MainFrame.Position.Y.Scale)
+		end
+	end)
+	
+	TopBar.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Draggable = false
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if Draggable == true then
+			local NewPosition = FramePosition + ((Vector2.new(input.Position.X, input.Position.Y) - DragMousePosition) / Camera.ViewportSize)
+			MainFrame.Position = UDim2.new(NewPosition.X, 0, NewPosition.Y, 0)
+		end
+	end)
+end
+coroutine.wrap(PGPQRZ_fake_script)()
+local function MOWZGZV_fake_script() -- Auto.LocalScript 
+	local script = Instance.new('LocalScript', Auto)
+
+	--/ Button Function /--
+	local Toggled = false
+	
+	function onClick()
+		
+		if Toggled == false then
+			Toggled = true 
+			script.Parent.Text = "Auto (on)"
+		elseif Toggled == true then
+			Toggled = false
+			script.Parent.Text = "Auto (off)"
+		end
+		
+		--/ Auto-Loop /--
+		while Toggled == true do
+		--/ Compass Event /--
+		local GetCompassEvent = game:GetService("ReplicatedStorage").ActionEvents["Get compass"]
+	
+		GetCompassEvent:FireServer()
+		wait(0.1)
+		
+		--/ Excevate Event /--
+		local ExcevateEvent = game:GetService("ReplicatedStorage").ActionEvents.Excevate
+		local DigArea = game:GetService("Workspace").Excevation.DigArea:WaitForChild("DigArea")
+	
+		ExcevateEvent:FireServer(DigArea)
+		wait(8)
+		
+		--/ Clean Item Event /--
+		local CleanItemEvent = game:GetService("ReplicatedStorage").ActionEvents["Clean bones"]
+		local CleanItem = game:GetService("Workspace").Excevation.CleanArea.CleanItem
+	
+		CleanItemEvent:FireServer(CleanItem)
+		wait(5)
+		
+		--/ Package Event /--
+		local PackageEvent = game:GetService("ReplicatedStorage").ActionEvents.Package
+		local Package = game:GetService("Workspace").Excevation.Package
+	
+		PackageEvent:FireServer(Package)
+		
+			end
+	end
+	
+	script.Parent.MouseButton1Click:Connect(onClick)
+end
+coroutine.wrap(MOWZGZV_fake_script)()
