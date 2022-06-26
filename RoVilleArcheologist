@@ -8,6 +8,7 @@ local Background = Instance.new("Frame")
 local TopBar = Instance.new("TextLabel")
 local Auto = Instance.new("TextButton")
 local BottomBar = Instance.new("TextLabel")
+local Home = Instance.new("TextButton")
 
 --Properties:
 
@@ -37,7 +38,7 @@ Auto.Name = "Auto"
 Auto.Parent = Background
 Auto.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 Auto.BorderSizePixel = 0
-Auto.Position = UDim2.new(0.300000012, 0, 0.370000005, 0)
+Auto.Position = UDim2.new(0.0333333313, 0, 0.409999996, 0)
 Auto.Size = UDim2.new(0, 120, 0, 30)
 Auto.Font = Enum.Font.SourceSans
 Auto.Text = "Auto (Off)"
@@ -56,9 +57,20 @@ BottomBar.Text = "Created by:  Ayxen#6166"
 BottomBar.TextColor3 = Color3.fromRGB(255, 255, 255)
 BottomBar.TextSize = 14.000
 
+Home.Name = "Home"
+Home.Parent = Background
+Home.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Home.BorderSizePixel = 0
+Home.Position = UDim2.new(0.5, 0, 0.409999996, 0)
+Home.Size = UDim2.new(0, 51, 0, 30)
+Home.Font = Enum.Font.SourceSans
+Home.Text = "Home"
+Home.TextColor3 = Color3.fromRGB(255, 255, 255)
+Home.TextSize = 14.000
+
 -- Scripts:
 
-local function PGPQRZ_fake_script() -- Background.LocalScript 
+local function TMUNT_fake_script() -- Background.LocalScript 
 	local script = Instance.new('LocalScript', Background)
 
 	local UserInputService = game:GetService("UserInputService")
@@ -93,12 +105,14 @@ local function PGPQRZ_fake_script() -- Background.LocalScript
 			MainFrame.Position = UDim2.new(NewPosition.X, 0, NewPosition.Y, 0)
 		end
 	end)
+	
+	
 end
-coroutine.wrap(PGPQRZ_fake_script)()
-local function MOWZGZV_fake_script() -- Auto.LocalScript 
+coroutine.wrap(TMUNT_fake_script)()
+local function AKLVSW_fake_script() -- Auto.LocalScript 
 	local script = Instance.new('LocalScript', Auto)
 
-	--/ Button Function /--
+	--/ Button Handler /--
 	local Toggled = false
 	
 	function onClick()
@@ -111,37 +125,50 @@ local function MOWZGZV_fake_script() -- Auto.LocalScript
 			script.Parent.Text = "Auto (off)"
 		end
 		
+		local PlayedCount = 0
+		local Paycheck = game:GetService("ReplicatedStorage").CS.RedeemPaycheck
+		
 		--/ Auto-Loop /--
 		while Toggled == true do
-		--/ Compass Event /--
+			--/ Compass Handler /--
 		local GetCompassEvent = game:GetService("ReplicatedStorage").ActionEvents["Get compass"]
 	
 		GetCompassEvent:FireServer()
 		wait(0.1)
 		
-		--/ Excevate Event /--
+			--/ Excevate Handler /--
 		local ExcevateEvent = game:GetService("ReplicatedStorage").ActionEvents.Excevate
 		local DigArea = game:GetService("Workspace").Excevation.DigArea:WaitForChild("DigArea")
 	
 		ExcevateEvent:FireServer(DigArea)
 		wait(8)
 		
-		--/ Clean Item Event /--
+			--/ Clean Item Handler /--
 		local CleanItemEvent = game:GetService("ReplicatedStorage").ActionEvents["Clean bones"]
 		local CleanItem = game:GetService("Workspace").Excevation.CleanArea.CleanItem
 	
 		CleanItemEvent:FireServer(CleanItem)
 		wait(5)
 		
-		--/ Package Event /--
+			--/ Package Handler /--
 		local PackageEvent = game:GetService("ReplicatedStorage").ActionEvents.Package
 		local Package = game:GetService("Workspace").Excevation.Package
-	
-		PackageEvent:FireServer(Package)
-		
+			PackageEvent:FireServer(Package)
+			--/ Paycheck Handler /--
+			PlayedCount = PlayedCount + 1 
+			if PlayedCount > 5 then
+				PlayedCount = 0
+				Paycheck:FireServer()
+			end
 			end
 	end
 	
 	script.Parent.MouseButton1Click:Connect(onClick)
 end
-coroutine.wrap(MOWZGZV_fake_script)()
+coroutine.wrap(AKLVSW_fake_script)()
+local function UCYSBBY_fake_script() -- Home.LocalScript 
+	local script = Instance.new('LocalScript', Home)
+
+	local player 
+end
+coroutine.wrap(UCYSBBY_fake_script)()
